@@ -18,7 +18,6 @@ void CreateDynamicMemory() {
 
     while(fread(&dataInSave, sizeof(struct TDato), 1, muestreo)) {
         contador++;
-        printf("%d \n", dataInSave.nace);
         data = (TDato*) realloc(data, contador*sizeof(TDato));
     }
 
@@ -39,10 +38,10 @@ void ReadNewspaper() {
     int numbersFinded = 0;
     for (int i = 0; i < contador; i++) {
 
-        int yearFinded = *(data+i).nace;
+        int yearFinded = (data+i)->nace;
         if ((yearFinded + 1972) == yearBorn) {
-            sumaAlturaTotal += *(data+i).altura;
-            sumaPesoTotal += *(data+i).peso;
+            sumaAlturaTotal += (data+i)->altura;
+            sumaPesoTotal += (data+i)->peso;
             numbersFinded++;
         }
     }
@@ -58,7 +57,7 @@ int main() {
     AskData();
     ReadNewspaper();
 
-    free(dataInSave);
+    //free(dataInSave);
 
     return 0;
 }
