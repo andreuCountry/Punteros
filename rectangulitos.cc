@@ -11,7 +11,7 @@
 unsigned char si = 0, fps=25; //Control de frames por segundo
 double current_time, last_time;
 int windowX = 800, windowY = 600, numberFigures = 0;
-float size = 1;
+float size = 5;
 
 FILE *f;
 
@@ -43,41 +43,42 @@ void GenerateSeed() {
     srand(time(NULL));
 }
 
-void DrawFigure(TFigures figure) {
-    if (figure.type == Types::RECTANGLE) {
+void DrawFigure() {
 
+    for (int i = 0; i < numberFigures; i++) {
 
-        float *tvertex = (float*) malloc(10*sizeof(float));
+        if ((figuresData+i)->type == Types::RECTANGLE) {
 
-        *(tvertex + 0) = figure.coordenate.x;
-        *(tvertex + 1) = figure.coordenate.y;
+            float *tvertex = (float*) malloc(10*sizeof(float));
 
-        printf("Primer par: [%f] ---- [%f]", *(tvertex + 0), *(tvertex + 1));
+            *(tvertex + 0) = (figuresData+i)->coordenate.x;
+            *(tvertex + 1) = (figuresData+i)->coordenate.y;
 
-        *(tvertex + 2) = figure.coordenate.x + size;
-        *(tvertex + 3) = figure.coordenate.y;
+            *(tvertex + 2) = (figuresData+i)->coordenate.x + size;
+            *(tvertex + 3) = (figuresData+i)->coordenate.y;
 
-        *(tvertex + 4) = figure.coordenate.x + size;
-        *(tvertex + 5) = figure.coordenate.y + size;
+            *(tvertex + 4) = (figuresData+i)->coordenate.x + size;
+            *(tvertex + 5) = (figuresData+i)->coordenate.y + size;
 
-        *(tvertex + 6) = figure.coordenate.x;
-        *(tvertex + 7) = figure.coordenate.y + size;
+            *(tvertex + 6) = (figuresData+i)->coordenate.x;
+            *(tvertex + 7) = (figuresData+i)->coordenate.y + size;
 
-        *(tvertex + 8) = figure.coordenate.x;
-        *(tvertex + 9) = figure.coordenate.y;
+            *(tvertex + 8) = (figuresData+i)->coordenate.x;
+            *(tvertex + 9) = (figuresData+i)->coordenate.y;
 
-        esat::DrawSetFillColor(figure.color.R, figure.color.G, figure.color.B, 255);
+            esat::DrawSetFillColor((figuresData+i)->color.R, (figuresData+i)->color.G, (figuresData+i)->color.B, 255);
 
-        printf("Colores: [%d] --- [%d] --- [%d] \n", figure.color.R, figure.color.G, figure.color.B);
-        esat::DrawSolidPath(tvertex, 10);
+            esat::DrawSolidPath(tvertex, 10);
 
-    } else {
+        } else {
 
-        float *tvertex = (float*) malloc(8*sizeof(float));
+            float *tvertex = (float*) malloc(8*sizeof(float));
 
-        esat::DrawSolidPath(tvertex, 4);
+            esat::DrawSolidPath(tvertex, 4);
 
+        }
     }
+
 }
 
 void Spawn(Types type) {
@@ -88,21 +89,21 @@ void Spawn(Types type) {
 
     TFigures figure = {{positionX, positionY}, colorFigure, type};
 
-    DrawFigure(figure);
+    figuresData = (TFigures*) realloc(figuresData, numberFigures*sizeof(TFigures));
+
+    *(figuresData+numberFigures) = figure;
 }
 
 void ControlsManage() {
 
     if (esat::MouseButtonDown(0)) {
-        Spawn(Types::RECTANGLE);
         numberFigures++;
-        figuresData = (TFigures*) realloc(figuresData, numberFigures*sizeof(TFigures));
+        Spawn(Types::RECTANGLE);
     }
 
     if (esat::MouseButtonDown(1)) {
-        Spawn(Types::TRIANGLE);
         numberFigures++;
-        figuresData = (TFigures*) realloc(figuresData, numberFigures*sizeof(TFigures));
+        Spawn(Types::TRIANGLE);
     }
     
 }
@@ -122,9 +123,11 @@ int esat::main(int argc, char **argv) {
             
     	esat::DrawBegin();
 
-    	esat::DrawClear(0, 0, 255);
+    	esat::DrawClear(0, 0, 0);
 
         ControlsManage();
+
+        DrawFigure();
 
     	esat::DrawEnd();
     	//Control fps 
