@@ -38,6 +38,7 @@ struct TFigures {
 };
 
 TFigures* figuresData = nullptr;
+TFigures figureSingular;
 
 void GenerateSeed() {
     srand(time(NULL));
@@ -143,8 +144,29 @@ void Rotate() {
     {   
         // play with vertexs
 
-        (figuresData + i)->coordenate.x -= 0.5;
+        /*esat::Vec2 *tvertex = (esat::Vec2*) malloc(4*sizeof(esat::Vec2));
+
+        *(tvertex + 0) = {(figuresData + i)->coordenate.x - 2, (figuresData + i)->coordenate.y + 2};
+        *(tvertex + 1) = {(figuresData + i + 1)->coordenate.x + 2, (figuresData + i + 1)->coordenate.y - 2};
+        *(tvertex + 2) = {(figuresData + i + 2)->coordenate.x + 2 , (figuresData + i + 2)->coordenate.y - 2};
+        *(tvertex + 3) = {(figuresData + i + 3)->coordenate.x - 2, (figuresData + i + 3)->coordenate.y - 2};
+
+        (figuresData + i)->coordenate.x = tvertex->x;
+        (figuresData + i)->coordenate.y = tvertex->y;
+
+        free(tvertex);*/
     }
+}
+
+void Save() {
+
+    f = fopen("files/figures.dat", "w+b");
+
+    for (int i = 0; i < numberFigures; i++) {
+        fwrite(figuresData + i, sizeof(struct TFigures), 1, f);
+    }
+
+    fclose(f);
 }
 
 void ControlsManage() {
@@ -182,6 +204,10 @@ void ControlsManage() {
     if (esat::IsSpecialKeyPressed(esat::kSpecialKey_Space)) {
         Rotate();
     }
+
+    if (esat::IsKeyPressed('S')) {
+        Save();
+    }
 }
 
 void AddMovement() {
@@ -195,6 +221,27 @@ void AddMovement() {
     }
 }
 
+void ReadFolder() {
+
+    if ((f=fopen("files/figures.dat", "r+b")) == NULL) {
+        printf("Error. El fichero no existe");
+    } else {
+        int contador = 0;
+
+        while (fread(&figureSingular, sizeof(TFigures), 1, f)) {
+
+            figuresData = (TFigures*) realloc(figuresData, (contador + 1)*sizeof(TFigures));
+
+            *(figuresData + contador) = figureSingular; 
+            contador++;
+        }
+
+        numberFigures = contador;
+        
+        fclose(f);
+    }
+}
+
 int esat::main(int argc, char **argv) {
 
     GenerateSeed();
@@ -202,6 +249,7 @@ int esat::main(int argc, char **argv) {
 	esat::WindowInit(windowX, windowY);
 	WindowSetMouseVisibility(true);
 
+    ReadFolder();
 
     while(esat::WindowIsOpened() && !esat::IsSpecialKeyDown(esat::kSpecialKey_Escape)) {
 
