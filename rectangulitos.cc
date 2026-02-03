@@ -34,7 +34,7 @@ struct TFigures {
     esat::Vec2 coordenate;
     Color color;
     Types type;
-    int speed = rand()%5 + 1;
+    int speed = rand()%10 + 1;
 };
 
 TFigures* figuresData = nullptr;
@@ -138,6 +138,15 @@ void MoveRight() {
     }
 }
 
+void Rotate() {
+    for (int i = 0; i < numberFigures; i++)
+    {   
+        // play with vertexs
+
+        (figuresData + i)->coordenate.x -= 0.5;
+    }
+}
+
 void ControlsManage() {
 
     if (esat::MouseButtonDown(0)) {
@@ -168,6 +177,10 @@ void ControlsManage() {
     if (esat::IsSpecialKeyPressed(esat::kSpecialKey_Right))
     {
         MoveRight();
+    }
+
+    if (esat::IsSpecialKeyPressed(esat::kSpecialKey_Space)) {
+        Rotate();
     }
 }
 
