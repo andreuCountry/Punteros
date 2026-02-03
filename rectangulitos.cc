@@ -11,7 +11,7 @@
 unsigned char si = 0, fps=25; //Control de frames por segundo
 double current_time, last_time;
 int windowX = 800, windowY = 600, numberFigures = 0;
-float size = 5;
+float size = 20;
 
 FILE *f;
 
@@ -31,10 +31,10 @@ struct Color {
 };
 
 struct TFigures {
-    Coordenate coordenate;
+    esat::Vec2 coordenate;
     Color color;
     Types type;
-    int velocity = rand()%20;
+    int speed = rand()%5 + 1;
 };
 
 TFigures* figuresData = nullptr;
@@ -45,37 +45,36 @@ void GenerateSeed() {
 
 void DrawFigure() {
 
-    for (int i = 0; i < numberFigures; i++) {
+    if (numberFigures > 0) {
+        for (int i = 0; i < numberFigures; i++)
+        {
+            if ((figuresData+i)->type == Types::RECTANGLE)
+            {
+                esat::Vec2 *tvertex = (esat::Vec2*) malloc(4*sizeof(esat::Vec2));
 
-        if ((figuresData+i)->type == Types::RECTANGLE) {
+                *(tvertex + 0) = (figuresData + i)->coordenate;
+                *(tvertex + 1) = {(figuresData + i)->coordenate.x + size, (figuresData + i)->coordenate.y};
+                *(tvertex + 2) = {(figuresData + i)->coordenate.x + size, (figuresData + i)->coordenate.y + size};
+                *(tvertex + 3) = {(figuresData + i)->coordenate.x, (figuresData + i)->coordenate.y + size};
 
-            float *tvertex = (float*) malloc(10*sizeof(float));
+                esat::DrawSetFillColor((figuresData + i)->color.R, (figuresData + i)->color.G, (figuresData + i)->color.B, 255);
 
-            *(tvertex + 0) = (figuresData+i)->coordenate.x;
-            *(tvertex + 1) = (figuresData+i)->coordenate.y;
+                esat::DrawSolidPath(&tvertex->x, 4);
+                free(tvertex);
 
-            *(tvertex + 2) = (figuresData+i)->coordenate.x + size;
-            *(tvertex + 3) = (figuresData+i)->coordenate.y;
+            } else {
+                esat::Vec2 *tvertex = (esat::Vec2*) malloc(3*sizeof(esat::Vec2));
 
-            *(tvertex + 4) = (figuresData+i)->coordenate.x + size;
-            *(tvertex + 5) = (figuresData+i)->coordenate.y + size;
+                *(tvertex + 0) = (figuresData+i)->coordenate;
+                *(tvertex + 1) = {(figuresData+i)->coordenate.x + size, (figuresData+i)->coordenate.y};
+                *(tvertex + 2) = {(figuresData+i)->coordenate.x + size, (figuresData+i)->coordenate.y + size};
 
-            *(tvertex + 6) = (figuresData+i)->coordenate.x;
-            *(tvertex + 7) = (figuresData+i)->coordenate.y + size;
+                esat::DrawSetFillColor((figuresData+i)->color.R, (figuresData+i)->color.G, (figuresData+i)->color.B, 255);
 
-            *(tvertex + 8) = (figuresData+i)->coordenate.x;
-            *(tvertex + 9) = (figuresData+i)->coordenate.y;
+                esat::DrawSolidPath(&tvertex->x, 3);
+                free(tvertex);
 
-            esat::DrawSetFillColor((figuresData+i)->color.R, (figuresData+i)->color.G, (figuresData+i)->color.B, 255);
-
-            esat::DrawSolidPath(tvertex, 10);
-
-        } else {
-
-            float *tvertex = (float*) malloc(8*sizeof(float));
-
-            esat::DrawSolidPath(tvertex, 4);
-
+            }
         }
     }
 
@@ -89,23 +88,100 @@ void Spawn(Types type) {
 
     TFigures figure = {{positionX, positionY}, colorFigure, type};
 
-    figuresData = (TFigures*) realloc(figuresData, numberFigures*sizeof(TFigures));
+    figuresData = (TFigures*) realloc(figuresData, (numberFigures + 1)*sizeof(TFigures));
 
-    *(figuresData+numberFigures) = figure;
+    *(figuresData + numberFigures) = figure;
+
+    if ((figuresData+numberFigures)->type == Types::RECTANGLE)
+    {
+        esat::Vec2 *tvertex = (esat::Vec2*) malloc(4*sizeof(esat::Vec2));
+
+        *(tvertex + 0) = (figuresData + numberFigures)->coordenate;
+        *(tvertex + 1) = {(figuresData + numberFigures)->coordenate.x + size, (figuresData + numberFigures)->coordenate.y};
+        *(tvertex + 2) = {(figuresData + numberFigures)->coordenate.x + size, (figuresData + numberFigures)->coordenate.y + size};
+        *(tvertex + 3) = {(figuresData + numberFigures)->coordenate.x, (figuresData + numberFigures)->coordenate.y + size};
+
+        esat::DrawSetFillColor((figuresData+numberFigures)->color.R, (figuresData+numberFigures)->color.G, (figuresData+numberFigures)->color.B, 255);
+
+        esat::DrawSolidPath(&tvertex->x, 4);
+        free(tvertex);
+
+    } else {
+        esat::Vec2 *tvertex = (esat::Vec2*) malloc(3*sizeof(esat::Vec2));
+
+        *(tvertex + 0) = (figuresData + numberFigures)->coordenate;
+        *(tvertex + 1) = {(figuresData + numberFigures)->coordenate.x + size, (figuresData + numberFigures)->coordenate.y};
+        *(tvertex + 2) = {(figuresData + numberFigures)->coordenate.x + size, (figuresData + numberFigures)->coordenate.y + size};
+
+        esat::DrawSetFillColor((figuresData + numberFigures)->color.R, (figuresData + numberFigures)->color.G, (figuresData + numberFigures)->color.B, 255);
+
+        esat::DrawSolidPath(&tvertex->x, 3);
+        free(tvertex);
+
+    }
+    
+    numberFigures++;
+}
+
+void MoveLeft() {
+    for (int i = 0; i < numberFigures; i++)
+    {   
+        (figuresData + i)->coordenate.x -= 2;
+        (figuresData + i)->coordenate.y -= 2;
+    }
+    
+}
+
+void MoveRight() {
+    for (int i = 0; i < numberFigures; i++)
+    {   
+        (figuresData + i)->coordenate.x += 2;
+        (figuresData + i)->coordenate.y += 2;
+    }
 }
 
 void ControlsManage() {
 
     if (esat::MouseButtonDown(0)) {
-        numberFigures++;
         Spawn(Types::RECTANGLE);
     }
 
     if (esat::MouseButtonDown(1)) {
-        numberFigures++;
         Spawn(Types::TRIANGLE);
     }
-    
+
+    if (esat::IsKeyPressed('Z')) {
+        size += 2;
+    }
+
+    if (esat::IsKeyPressed('X')) {
+
+        if (size - 2 > 4)
+        {
+            size -= 2;
+        }
+    }
+
+    if (esat::IsSpecialKeyPressed(esat::kSpecialKey_Left))
+    {
+        MoveLeft();
+    }
+
+    if (esat::IsSpecialKeyPressed(esat::kSpecialKey_Right))
+    {
+        MoveRight();
+    }
+}
+
+void AddMovement() {
+    for (int i = 0; i < numberFigures; i++) {
+        if ((figuresData + i)->coordenate.y + 2 > windowY)
+        {
+            (figuresData + i)->coordenate.y = 0 - size;
+        }
+        
+        (figuresData + i)->coordenate.y += (figuresData + i)->speed;
+    }
 }
 
 int esat::main(int argc, char **argv) {
@@ -114,7 +190,6 @@ int esat::main(int argc, char **argv) {
 
 	esat::WindowInit(windowX, windowY);
 	WindowSetMouseVisibility(true);
-
 
 
     while(esat::WindowIsOpened() && !esat::IsSpecialKeyDown(esat::kSpecialKey_Escape)) {
@@ -128,6 +203,7 @@ int esat::main(int argc, char **argv) {
         ControlsManage();
 
         DrawFigure();
+        AddMovement();
 
     	esat::DrawEnd();
     	//Control fps 
