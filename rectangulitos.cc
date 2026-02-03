@@ -127,7 +127,6 @@ void MoveLeft() {
     for (int i = 0; i < numberFigures; i++)
     {   
         (figuresData + i)->coordenate.x -= 2;
-        (figuresData + i)->coordenate.y -= 2;
     }
     
 }
@@ -136,7 +135,6 @@ void MoveRight() {
     for (int i = 0; i < numberFigures; i++)
     {   
         (figuresData + i)->coordenate.x += 2;
-        (figuresData + i)->coordenate.y += 2;
     }
 }
 
