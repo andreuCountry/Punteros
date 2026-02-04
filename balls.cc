@@ -84,6 +84,21 @@ void InitMemory() {
     ballData = (TBall*) realloc(ballData, (numberFigures)*sizeof(TBall));
 }
 
+bool CheckBorders(TBall ball) {
+    
+    // use sprite weight and height and coordenate
+    Coordenate ballCoordenate = ball->coordenate;
+
+    if (ballCoordenate.x > windowX) {
+
+    }
+}
+
+void AddMovement(TBall ball) {
+
+    bool cross = CheckBorders(ball);
+}
+
 void Draw() {
 
     esat::SpriteHandle color;
@@ -105,7 +120,7 @@ void Draw() {
             }
         }
         
-        AddMovement((ballData + i)->direction);
+        AddMovement((ballData + i));
 
         esat::DrawSprite(color, (ballData + i)->coordenate.x, (ballData + i)->coordenate.y);
         esat::DrawSprite((ballData + i)->sprite, (ballData + i)->coordenate.x, (ballData + i)->coordenate.y);
