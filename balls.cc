@@ -73,7 +73,29 @@ void InitSprites() {
     green = esat::SpriteFromFile("./Recursos/Imagenes/Sprites/verde.png");
 
     for (int i = 0; i < numberFigures; i++) {
-        (ballData + i)->coordenate = {rand()%windowX, rand()%windowY};
+        
+        // Validation
+
+        int x = rand()%windowX;
+        int y = rand()%windowY;
+
+        if (x + esat::SpriteWidth(sprite1) > windowX) {
+            x = windowX - esat::SpriteWidth(sprite1);
+        }
+
+        if (x - esat::SpriteWidth(sprite1) < 0) {
+            x = 0;
+        }
+
+        if (y + esat::SpriteHeight(sprite1) > windowY) {
+            y = windowY - esat::SpriteHeight(sprite1);
+        }
+
+        if (y - esat::SpriteHeight(sprite1) < 0) {
+            y = 0;
+        }
+
+        (ballData + i)->coordenate = {x, y};
         (ballData + i)->sprite = sprite1;
         (ballData + i)->speed = rand()%15 + 1;
         (ballData + i)->direction = ChooseDirection();
@@ -84,19 +106,49 @@ void InitMemory() {
     ballData = (TBall*) realloc(ballData, (numberFigures)*sizeof(TBall));
 }
 
-bool CheckBorders(TBall ball) {
-    
-    // use sprite weight and height and coordenate
-    Coordenate ballCoordenate = ball->coordenate;
-
-    if (ballCoordenate.x > windowX) {
-
+void AddMovement(TBall* ball) {
+    switch (ball->direction) {
+        case UR:
+            if (ball->coordenate.x + esat::SpriteWidth(ball->sprite) > windowX) {
+                ball->direction = UL;
+            } else if (ball->coordenate.y < 0) {
+                ball->direction = DR;
+            } else {
+                ball->coordenate.x += ball->speed;
+                ball->coordenate.y -= ball->speed;
+            }
+        break;
+        case UL:
+            if (ball->coordenate.x < 0) {
+                ball->direction = UR;
+            } else if (ball->coordenate.y < 0) {
+                ball->direction = DL;
+            } else {
+                ball->coordenate.x -= ball->speed;
+                ball->coordenate.y -= ball->speed;
+            }
+        break;
+        case DR:
+            if (ball->coordenate.x + esat::SpriteWidth(ball->sprite) > windowX) {
+                ball->direction = DL;
+            } else if (ball->coordenate.y + esat::SpriteHeight(ball->sprite) > windowY) {
+                ball->direction = UR;
+            } else {
+                ball->coordenate.x += ball->speed;
+                ball->coordenate.y += ball->speed;
+            }
+        break;
+        case DL:
+            if (ball->coordenate.x < 0) {
+                ball->direction = DR;
+            } else if (ball->coordenate.y + esat::SpriteHeight(ball->sprite) > windowY) {
+                ball->direction = UL;
+            } else {
+                ball->coordenate.x -= ball->speed;
+                ball->coordenate.y += ball->speed;
+            }
+        break;
     }
-}
-
-void AddMovement(TBall ball) {
-
-    bool cross = CheckBorders(ball);
 }
 
 void Draw() {
@@ -158,7 +210,6 @@ int esat::main(int argc, char **argv) {
     	esat::DrawClear(0, 0, 0);
 
         Draw();
-        AddMovement();
 
     	esat::DrawEnd();
     	//Control fps 
