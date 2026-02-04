@@ -236,6 +236,7 @@ void ReadFolder() {
             contador++;
         }
 
+        // Actualizar numberFigures 
         numberFigures = contador;
         
         fclose(f);
