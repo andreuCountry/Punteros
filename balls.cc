@@ -24,6 +24,7 @@ struct TBall {
     esat::SpriteHandle sprite;
     int speed;
     Direction direction;
+    bool isHitting = false;
 };
 
 // You know what i mean 
@@ -151,6 +152,51 @@ void AddMovement(TBall* ball) {
     }
 }
 
+void CheckCollision(TBall* ball, int memoryPosition) {
+    /*for (int i = 0; i < numberFigures; i++) {
+        switch (ball->direction) {
+            case UR:
+                if (memoryPosition != i) {
+                    if (ball->coordenate.x + (esat::SpriteWidth(ball->sprite)/2) > (ballData + i)->coordenate.x - (esat::SpriteWidth((ballData + i)->sprite) / 2) &&
+                        ball->coordenate.y + (esat::SpriteHeight(ball->sprite)/2) > (ballData + i)->coordenate.y - (esat::SpriteHeight((ballData + i)->sprite) / 2)) {
+                        ball->direction = UL;
+                    }
+                }
+            break;
+            case UL:
+                if (ball->coordenate.x < 0) {
+                    ball->direction = UR;
+                } else if (ball->coordenate.y < 0) {
+                    ball->direction = DL;
+                } else {
+                    ball->coordenate.x -= ball->speed;
+                    ball->coordenate.y -= ball->speed;
+                }
+            break;
+            case DR:
+                if (ball->coordenate.x + esat::SpriteWidth(ball->sprite) > windowX) {
+                    ball->direction = DL;
+                } else if (ball->coordenate.y + esat::SpriteHeight(ball->sprite) > windowY) {
+                    ball->direction = UR;
+                } else {
+                    ball->coordenate.x += ball->speed;
+                    ball->coordenate.y += ball->speed;
+                }
+            break;
+            case DL:
+                if (ball->coordenate.x < 0) {
+                    ball->direction = DR;
+                } else if (ball->coordenate.y + esat::SpriteHeight(ball->sprite) > windowY) {
+                    ball->direction = UL;
+                } else {
+                    ball->coordenate.x -= ball->speed;
+                    ball->coordenate.y += ball->speed;
+                }
+            break;
+        }
+    }*/
+}
+
 void Draw() {
 
     esat::SpriteHandle color;
@@ -173,6 +219,7 @@ void Draw() {
         }
         
         AddMovement((ballData + i));
+        CheckCollision((ballData + i), i);
 
         esat::DrawSprite(color, (ballData + i)->coordenate.x, (ballData + i)->coordenate.y);
         esat::DrawSprite((ballData + i)->sprite, (ballData + i)->coordenate.x, (ballData + i)->coordenate.y);
