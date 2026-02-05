@@ -105,6 +105,7 @@ void AskCharacterPool() {
 
         CalculatePoolsFields(i, num1, num2, num3);
     }
+
     char response;
     printf("End, do you want to see it (Y/n)?");
     scanf("%c", &response);
@@ -126,7 +127,8 @@ void WhatSee() {
     printf("1 -- See basic information \n");
     printf("2 -- Another think \n");
     printf("Option? ");
-    scanf("%d \n \n", &option);
+    scanf("%d", &option);
+    printf("\n \n");
 
     switch (option) {
         case 1:
