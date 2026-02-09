@@ -59,6 +59,26 @@ void InitMemory() {
 	celulaData = (TCelula*) malloc(filas*sizeof(TCelula));
 }
 
+void DrawBox(esat::Vec2 initialPosition, esat::Vec2 lastPosition, bool isAlive) {
+	float rect[10] = {
+        initialPosition.x, initialPosition.y,
+        lastPosition.x, initialPosition.y,
+        lastPosition.x, lastPosition.y,
+        initialPosition.x, lastPosition.y,
+        initialPosition.x, initialPosition.y
+    };
+
+	if (isAlive) {
+		esat::DrawSetStrokeColor(255, 0, 0, 0);
+    	esat::DrawSetFillColor(255, 0, 0, 0);
+    	esat::DrawSolidPath(rect, 5);
+	} else {
+		esat::DrawSetStrokeColor(255, 0, 0, 0);
+    	esat::DrawSetFillColor(0, 0, 0, 0);
+    	esat::DrawSolidPath(rect, 5);
+	}
+}
+
 void InitMap() {
 	float coordenateX = 0.0f;
 	float coordenateY = windowY / filas;
@@ -74,7 +94,7 @@ void InitMap() {
 			(celulaData+i)->initialPosition = {coordenateX, coordenateY};
 			(celulaData+i)->lastPosition = {coordenateX + (windowX / filas), coordenateY};
 			coordenateX += windowX / filas;
-			esat::
+			DrawBox((celulaData+i)->initialPosition, (celulaData+i)->lastPosition, (celulaData+i)->IsAlive);
 		} else {
 			coordenateX = 0;
 			coordenateY += windowY / filas;
@@ -95,7 +115,6 @@ int esat::main(int argc, char **argv) {
 
 	TakeBornDead(*(argv+1));
 	InitMemory();
-	InitMap();
 
 	esat::WindowInit(windowX, windowY);
 	WindowSetMouseVisibility(true);
@@ -110,7 +129,7 @@ int esat::main(int argc, char **argv) {
 
     	esat::DrawClear(0, 0, 0);
 
-
+		InitMap();
 
     	esat::DrawEnd();
     	//Control fps 
