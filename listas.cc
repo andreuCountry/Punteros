@@ -39,7 +39,7 @@ int main() {
     EliminaEnLista(&lista1,28);
     printf("\n Eliminado valor 28 de la lista\n");
     printf(" Lista >>> ");
-    MuestraLista(lista1);/*
+    MuestraLista(lista1);
     EliminaEnLista(&lista1,3);
     printf("\n Eliminado valor 3 de la lista\n");
     printf(" Lista >>> ");
@@ -48,7 +48,7 @@ int main() {
     printf("\n Eliminado valor 280 de la lista\n");
     printf(" Lista >>> ");
     MuestraLista(lista1);
-    printf("\n\n");*/
+    printf("\n\n");
 
 	return 0;
 }

@@ -69,12 +69,17 @@ void EliminaEnLista(TLista** lista, int info) {
     TLista* aux = nullptr;
     bool encontrado = false;
 
+    if (p->prox == nullptr) {
+        
+    }
+
     for(p = *lista;  p != nullptr && !encontrado; p = p->prox) {
         aux = p->prox;
         encontrado = aux->info == info;
 
         if (encontrado) {
-            p = p->prox;
+
+            p->prox = aux->prox;
             free(aux);
         }
     }
