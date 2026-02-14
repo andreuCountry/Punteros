@@ -31,12 +31,14 @@ TLista* IndexaLista(TLista* lista, int index) {
     
     TLista* p = lista;
 
-    for(int i = 0; i < index && p != nullptr; i++) {
-        p = lista->prox;
+    for(int i = 0; i < index && p != nullptr; p = lista->prox) {
+        i++;
     }
 
     return p;
 }
+
+
 
 int main() {
 
@@ -57,7 +59,7 @@ int main() {
     MuestraLista(lista1);
     
     printf("\n\n Acceso indexado a lista por valor que ocupa posicion 0. \n");
-    lista2=IndexaLista(lista1,0);
+    lista2=IndexaLista(lista1,5);
     printf(" Elemento apuntado de la lista: %d \n",lista2->info);
     /*
     printf("\n\n Buscar y apuntar. \n");
