@@ -29,6 +29,10 @@ void MuestraConjunto(TConjunto* conjunto) {
     }
 }
 
+bool Pertenece(TConjunto* con1, TConjunto* con2) {
+    
+}
+
 void InterseccionConjunto(TConjunto* conjunto1, TConjunto* conjunto2, TConjunto** result) {
     TConjunto* con1;
     TConjunto* con2;
