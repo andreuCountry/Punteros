@@ -58,7 +58,7 @@ TLista2* BuscarEnLista(TLista2* lista2, int valor) {
 void InvertidoMostrarLista(TLista2* lista2) {
     TLista2* aux = nullptr;
 
-    for(aux = lista2; aux->prox != nullptr; aux = aux->prox);
+    for (aux = lista2; aux->prox != nullptr; aux = aux->prox);
 
     for (int j = 0; aux != nullptr; aux = aux->ante) {
         printf(" %d", aux->info);
@@ -67,5 +67,26 @@ void InvertidoMostrarLista(TLista2* lista2) {
 }
 
 TLista2* ExtraerLista(TLista2** lista2) {
+    TLista2* p = *lista2;
+    TLista2* aux = nullptr;
+    TLista2* aux2 = nullptr;
+
+    aux = p->prox;
+    aux2 = p->ante;
     
+    if (aux != nullptr) {
+        aux->ante = aux2;
+    }
+
+    if (aux2 != nullptr) {
+        aux2->prox = aux;
+    }
+
+    p->prox = nullptr;
+    p->ante = nullptr;
+
+    // si la lista sigue apuntando a uno que vas a liberar se rompe
+    *lista2 = aux;
+
+    return p;
 }
