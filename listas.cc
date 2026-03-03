@@ -27,7 +27,7 @@ int main() {
     MuestraLista(lista1);
     
     printf("\n\n Acceso indexado a lista por valor que ocupa posicion 0. \n");
-    lista2=IndexaLista(lista1,0);
+    lista2=IndexaLista(lista1,5);
     printf(" Elemento apuntado de la lista: %d \n",lista2->info);
     printf("\n\n Buscar y apuntar. \n");
     if((lista2=BuscarLista(lista1,3,actual))==nullptr){
