@@ -33,7 +33,7 @@ int main(){
     printf("Lista 2 Invertida: ");InvertidoMostrarLista(Lista2);printf("\n"); //Comprobación de recorrido invertido;
     
     l=ExtraerLista(&Lista1);printf("Numero Extraido  : %d\n",l->info);
-    //free(l);
+    free(l);
     printf("Lista 1          : ");MostrarLista(Lista1); printf("\n");
     printf("Lista 1 Invertida: ");InvertidoMostrarLista(Lista1);printf("\n"); //Comprobación de recorrido invertido;
     /*
