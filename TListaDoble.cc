@@ -90,3 +90,48 @@ TLista2* ExtraerLista(TLista2** lista2) {
 
     return p;
 }
+
+int LongitudLista(TLista2* lista2) {
+    
+    TLista2* p = lista2;
+    int contador = 0;
+
+    for (int i = 0; p != nullptr; p = p->prox) {
+        contador++;
+    }
+
+    return contador;
+}
+
+void EliminarElemento(TLista2** lista2, int value) {
+    
+    TLista2* p = *lista2;
+    TLista2* aux = nullptr;
+    TLista2* aux2 = nullptr;
+
+    for (int i = 0; p != nullptr; p = p->prox) {
+        if (value == p->info) {
+            if (p->prox != nullptr) {
+                aux = p->prox;
+            }
+
+            if (p->ante != nullptr) {
+                aux2 = p->ante;
+            }
+
+            p->prox = nullptr;
+            p->ante = nullptr;
+
+            *lista2 = aux;
+            TLista2* aux_delete = p;
+
+            if (p->prox != nullptr) {
+                p = p->prox;
+            } else {
+                p = p->ante;
+            }
+
+            free(aux_delete);
+        }
+    }
+}

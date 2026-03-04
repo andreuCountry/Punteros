@@ -36,7 +36,7 @@ int main(){
     free(l);
     printf("Lista 1          : ");MostrarLista(Lista1); printf("\n");
     printf("Lista 1 Invertida: ");InvertidoMostrarLista(Lista1);printf("\n"); //Comprobación de recorrido invertido;
-    /*
+    
     printf(" >>> Eliminado valor 20 en lista 1\n");EliminarElemento(&Lista1,20);
     printf("Lista 1          : ");MostrarLista(Lista1);printf("Long: %d\n",LongitudLista(Lista1));
     printf("Lista 2          : ");MostrarLista(Lista2);printf("Long: %d\n",LongitudLista(Lista2));
@@ -48,7 +48,7 @@ int main(){
     EliminarElemento(&Lista2,45);printf("Lista 2          : ");MostrarLista(Lista2); printf("\n");
     printf("\n-----------------\n");
     printf("Lista 1          : ");MostrarLista(Lista1); printf("\n");
-    printf("Lista 2          : ");MostrarLista(Lista2); printf("\n");*/
+    printf("Lista 2          : ");MostrarLista(Lista2); printf("\n");
 
     return 0;
 }
