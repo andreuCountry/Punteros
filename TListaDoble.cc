@@ -108,30 +108,32 @@ void EliminarElemento(TLista2** lista2, int value) {
     TLista2* p = *lista2;
     TLista2* aux = nullptr;
     TLista2* aux2 = nullptr;
+    TLista2* to_delete = nullptr;
 
     for (int i = 0; p != nullptr; p = p->prox) {
         if (value == p->info) {
             if (p->prox != nullptr) {
                 aux = p->prox;
+                aux->ante = p->ante;
+                aux->prox = p->prox->prox;
             }
 
             if (p->ante != nullptr) {
                 aux2 = p->ante;
+                aux2->prox = p->prox;
             }
 
             p->prox = nullptr;
             p->ante = nullptr;
+            to_delete = p;
 
-            *lista2 = aux;
-            TLista2* aux_delete = p;
-
-            if (p->prox != nullptr) {
-                p = p->prox;
-            } else {
-                p = p->ante;
-            }
-
-            free(aux_delete);
         }
     }
+
+    if (to_delete != nullptr) {
+        free(to_delete);
+    } else {
+        printf(">>> No encontrado en lista. \n");
+    }
+
 }
