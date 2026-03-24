@@ -11,23 +11,22 @@ tbbarbol* crear_barbol() {
 }
 
 tbbarbol* buscar_barbol(tbbarbol* barbol, int info) {
+    tbbarbol* aux = nullptr;
+    
     if (barbol != nullptr) {
         if (barbol->info != info) {
-            if (barbol->proxRight != nullptr) {
-                buscar_barbol(barbol->proxRight, info);
+            if (barbol->info < info) {
+                aux = buscar_barbol(barbol->proxRight, info);
+            } else {
+                aux = buscar_barbol(barbol->proxLeft, info);
             }
-            
-            if (barbol->proxLeft != nullptr) {
-                buscar_barbol(barbol->proxLeft, info);
-            }
-
-            return NULL;
+        
         } else {
-            return barbol;
+            aux = barbol;
         }
-    } else {
-        return NULL;
     }
+
+    return aux;
 }
 
 void insertar_barbol(tbbarbol** barbol, int info) {
